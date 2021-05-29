@@ -57,7 +57,13 @@
     padding: 90px 50px;
   }
   .about-project__wrapper:first-child {
-    margin-right: 10px;
+    margin-right: 25px;
+  }
+  .about-project__progress-item {
+    font-size: 11px;
+  }
+  .about-project__progress-item_green {
+    padding: 11px 5px;
   }
 }
 @media screen and (max-width:376px){
@@ -88,3 +94,5 @@
     font-size: 11px;
   }
 }
+
+

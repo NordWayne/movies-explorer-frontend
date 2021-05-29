@@ -11,7 +11,7 @@ const MoviesCard = () => {
           <p className='card__duration'>27 минут</p>
         </div>
         <img className='card__img' alt='фото фильма' src={film}/>
-        <button className='card__button' type='button'>Сохранить</button>
+        <button className='card__button card__button_saved' type='button'></button>
       </article>
     </li>
   );

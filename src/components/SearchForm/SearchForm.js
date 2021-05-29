@@ -7,7 +7,7 @@ const SearchForm = () => {
         <form className='search-form'>
           <div className='search-form__container'>
             <img className='search-form__image' src={logo} alt='поиск'/>
-            <input type='text' placeholder='Фильм' className='search-form__input'/>
+            <input type='text' placeholder='Фильм' className='search-form__input' required/>
             <button type='submit' className='search-form__submit'>Найти</button>
           </div>
           <label className='search-form__checkbox-wrapper'>

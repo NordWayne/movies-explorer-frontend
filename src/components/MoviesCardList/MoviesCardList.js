@@ -13,6 +13,7 @@ const MoviesCardList = () => {
         <MoviesCard/>
         <MoviesCard/>
         <MoviesCard/>
+        <MoviesCard/>
     </ul>
       {location.pathname !== '/saved-movies' && <button className='card__more-btn'>Ещё</button>}
 

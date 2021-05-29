@@ -47,8 +47,15 @@
   margin-bottom: 18px;
 }
 .card__button_saved {
-  background: #EE3465;
-  background: url('../../images/cardsaved.svg') center no-repeat;
+  background-color: #EE3465;
+  background-image: url('../../images/cardsaved.svg');
+  background-repeat: no-repeat;
+  background-position: 50%;
+}
+.card__button_delete {
+  background-image: url('../../images/carddelete.svg');
+  background-repeat: no-repeat;
+  background-position: 50%;
 }
 .card__button:hover {
   cursor: pointer;

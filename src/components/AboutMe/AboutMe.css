@@ -35,6 +35,7 @@
   font-size: 14px;
   margin-top: 0;
   margin-bottom: 100px;
+  margin-right: 20px;
 }
 .profile__socials {
   font-weight: 500;
@@ -66,7 +67,7 @@
     font-size: 12px;
     line-height: 18px;
     max-width: 364px;
-    margin-right: 5px;
+    margin-right: 20px;
   }
   .profile__photo {
     max-height: 307px;
