@@ -1,28 +1,61 @@
-import React from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import './Profile.css';
+import Header from '../Header/Header';
+import UserContext from '../../contexts/UserContext';
+import useForm from '../../hooks/useForm';
 
-const Profile = () => {
+const Profile = ({handleEditUser, handleSignOut}) => {
+  const user = useContext(UserContext);
+  const { handleChange, handleSubmit, values, errors, isValid, setValues } = useForm(handleEditUser);
+  useEffect(() => {
+    setValues(user)
+  },[user])
+
   return (
-    <section className='account'>
-      <div className='account__container'>
-        <h1 className='account__title'>Привет, Виталий!</h1>
-        <div className='account__data'>
-          <div className='account__text-wrapper account__text-wrapper_name'>
-            <p className='account__text'>Имя</p>
-            <p className='account__text'>Виталий</p>
-          </div>
-          <div className='account__text-wrapper account__text-wrapper_email'>
-            <p className='account__text'>E-mail</p>
-            <p className='account__text'>pochta@yandex.ru</p>
-          </div>
-        </div>
-        <div className='account__buttons'>
-          <button className='account__button'>Редактировать</button>
-          <button className='account__button account__button_type_signout'>Выйти из аккаунта</button>
-        </div>
-      </div>
+    <>
+      <Header/>
+      <section className='account'>
+        <form className='account__container' onSubmit={handleSubmit}>
+          <h1 className='account__title'>{`Привет, ${user.name}!`}</h1>
+          <div className='account__data'>
+            <div className='account__text-wrapper account__text-wrapper_name'>
+              <p className='account__text-label'>Имя</p>
+              <div className='account__input-container'>
+              <input
+                className='account__input'
+                value={values?.name || '' }
+                type='text'
+                minLength='2'
+                maxLength='30'
+                required
+                onChange={handleChange}
+                name='name'
+              />
+              <span className='account__error'>{errors?.name}</span>
+              </div>
+            </div>
 
-    </section>
+            <div className='account__text-wrapper account__text-wrapper_email'>
+              <p className='account__text-label'>E-mail</p>
+              <div className='account__input-container'>
+              <input className='account__input'
+                     value={values?.email || ''}
+                     type='text'
+                     minLength='2'
+                     maxLength='30'
+                     required
+                     onChange={handleChange}
+                     name='email'
+              />
+              <span className='account__error'>{errors?.email}</span>
+            </div>
+            </div>
+          </div>
+            <button className={`${isValid ?'account__button account__button_type_edit': 'account__button account__button_type_edit account__button_disabled'}`} type='submit' disabled={!isValid}>Редактировать</button>
+        </form>
+        <button className='account__button account__button_type_signout' onClick={handleSignOut} type='button'>Выйти из аккаунта</button>
+      </section>
+    </>
   );
 };
 

@@ -24,6 +24,10 @@
   line-height: 18px;
   color: #FFFFFF;
   margin:0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 240px;
 }
 .card__duration {
   font-weight: normal;
@@ -32,8 +36,9 @@
   color: #8B8B8B;
   margin:0;
 }
-.card__image {
+.card__img {
   height: 200px;
+  max-width: 360px;
 }
 .card__button {
   border: none;
@@ -74,6 +79,7 @@
   }
   .card__img {
     height: 190px;
+    max-width: 339px;
   }
 }
 @media screen and (max-width:396px) {
