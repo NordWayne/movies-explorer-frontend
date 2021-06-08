@@ -4,9 +4,7 @@ import logo from '../../images/searchicon.svg';
 
 const SearchForm = ({movies, handleSearchSubmit, handleCheckbox}) => {
   const [value, setValue] = useState('')
-  const [isChecked, setIsChecked] = useState(false);
   const onCheck = () => {
-    setIsChecked(!isChecked);
     handleCheckbox();
     handleSearchSubmit(movies, value)
   }
@@ -27,7 +25,7 @@ const SearchForm = ({movies, handleSearchSubmit, handleCheckbox}) => {
           </div>
           <label className='search-form__checkbox-wrapper'>
             <div className='search-form__checkbox-container'>
-              <input type='checkbox' className='search-form__checkbox' onChange={onCheck}/>
+              <input type='checkbox' className='search-form__checkbox' onChange={onCheck} />
               <span className='search-form__switcher'/>
             </div>
             <p className='search-form__text'>Короткометражки</p>

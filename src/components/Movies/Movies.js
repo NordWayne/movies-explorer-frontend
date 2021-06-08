@@ -10,7 +10,7 @@ const Movies = ({movies, savedMovies, filteredMovies, handleSaveMovie, handleDel
     <>
       <Header/>
       <section className='movies'>
-        <SearchForm handleSearchSubmit={handleSearchSubmit} movies={movies}  handleCheckbox={handleCheckbox}/>
+        <SearchForm handleSearchSubmit={handleSearchSubmit} movies={movies} handleCheckbox={handleCheckbox}/>
         <MoviesCardList movies={filteredMovies}
                         handleSaveMovie={handleSaveMovie}
                         savedMovies={savedMovies}

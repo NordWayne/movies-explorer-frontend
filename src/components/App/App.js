@@ -31,13 +31,11 @@ const App = () => {
   const history = useHistory();
   const getCurrentUser = () => {
     const jwt = localStorage.getItem('token');
-    console.log(jwt.length)
     if (jwt.length < 1) return
     mainApi
       .getUser(jwt)
       .then(res => {
         setCurrentUser(res.data);
-        console.log(res.data)
       })
       .catch(err => {console.log(err)})
   }
@@ -73,33 +71,27 @@ const App = () => {
   const handleSignOut = () => {
     setIsLoggedIn(false);
     localStorage.removeItem("token");
+    localStorage.removeItem("movies");
+    localStorage.removeItem("saved-movies");
+    localStorage.removeItem("filteredSavedMovies");
+    localStorage.removeItem("filteredMovies");
     history.push("/");
     setErrorMessage('')
   }
   const getSavedMovies = () => {
     setLoading(true)
     const jwt = localStorage.getItem('token');
-    const filteredSavedMovies = JSON.parse(localStorage.getItem('filteredSavedMovies'));
-    if (!filteredSavedMovies){
-      mainApi
-        .getMovies(jwt)
-        .then(res => {
-          localStorage.setItem('saved-movies', JSON.stringify(res))
-          setSavedMovies(res)
-          setFilteredSavedMovies(res);
-        })
-        .catch(err=> console.log(err))
-    }
-    else {
-      setSavedMovies(filteredSavedMovies)
-      setFilteredSavedMovies(filteredSavedMovies);
-    }
-
+    mainApi
+      .getMovies(jwt)
+      .then(res => {
+        localStorage.setItem('saved-movies', JSON.stringify(res))
+        setSavedMovies(res)
+        setFilteredSavedMovies(res);
+      })
   }
   const getMovies = () => {
     setLoading(true)
     const allMovies = JSON.parse(localStorage.getItem('movies'));
-    const filteredMovies = JSON.parse(localStorage.getItem('filteredMovies'));
     if(!allMovies) {
       moviesApi
         .getMovies()
@@ -110,11 +102,8 @@ const App = () => {
         .catch((err) => console.log(err))
         .finally(()=> setLoading(false))
     }
-    if (!filteredMovies) {
-      setFilteredMovies(allMovies);
-    }
-    setFilteredMovies(filteredMovies)
     setMovies(allMovies);
+    setFilteredMovies(allMovies);
     setLoading(false)
   }
   const [checkbox, setCheckbox] = useState(false);
@@ -142,7 +131,6 @@ const App = () => {
     });
   }
   const handleSearchSubmit = (cards, query) => {
-    console.log(1)
     const movies = filterMovies(cards, query.toLowerCase().trim());
     localStorage.setItem('filteredMovies', JSON.stringify(movies));
     setFilteredMovies(movies)
@@ -169,7 +157,6 @@ const App = () => {
   }
   const handleSaveMovie = (movie) => {
     const jwt = localStorage.getItem('token');
-    console.log(movie.image);
     if (movie.nameRU !== savedMovies.some((item) => item.nameRU)) {
       mainApi.addMovie(movie, jwt)
         .then((saveMovie) => {
@@ -228,12 +215,6 @@ const App = () => {
     }
   }, [windowWidth])
 
-
-  useEffect(() => {
-    getSavedMovies()
-    getMovies();
-  }, [])
-
   useEffect(() => {
     const jwt = localStorage.getItem('token');
     const path = location.pathname;
@@ -243,8 +224,9 @@ const App = () => {
         .then (()=> {
           setIsLoggedIn(true);
           getCurrentUser();
+          getSavedMovies()
+          getMovies();
           history.push(path)
-
         })
         .catch(err => {
           console.log('ошибка проверки токена',err)
