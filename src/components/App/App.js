@@ -17,6 +17,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import UserContext from '../../contexts/UserContext';
 import mainApi from '../../utils/mainApi';
 import moviesApi from '../../utils/moviesApi';
+import {SHORT_FILM_DURATION, COUNTOFMOVIES} from '../../utils/config';
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState({});
@@ -78,17 +79,27 @@ const App = () => {
   const getSavedMovies = () => {
     setLoading(true)
     const jwt = localStorage.getItem('token');
-    mainApi
-      .getMovies(jwt)
-      .then(res => {
-        localStorage.setItem('saved-movies', JSON.stringify(res))
-        setSavedMovies(res)
-        setFilteredSavedMovies(res);
-      })
+    const filteredSavedMovies = JSON.parse(localStorage.getItem('filteredSavedMovies'));
+    if (!filteredSavedMovies){
+      mainApi
+        .getMovies(jwt)
+        .then(res => {
+          localStorage.setItem('saved-movies', JSON.stringify(res))
+          setSavedMovies(res)
+          setFilteredSavedMovies(res);
+        })
+        .catch(err=> console.log(err))
+    }
+    else {
+      setSavedMovies(filteredSavedMovies)
+      setFilteredSavedMovies(filteredSavedMovies);
+    }
+
   }
   const getMovies = () => {
     setLoading(true)
     const allMovies = JSON.parse(localStorage.getItem('movies'));
+    const filteredMovies = JSON.parse(localStorage.getItem('filteredMovies'));
     if(!allMovies) {
       moviesApi
         .getMovies()
@@ -99,8 +110,11 @@ const App = () => {
         .catch((err) => console.log(err))
         .finally(()=> setLoading(false))
     }
+    if (!filteredMovies) {
+      setFilteredMovies(allMovies);
+    }
+    setFilteredMovies(filteredMovies)
     setMovies(allMovies);
-    setFilteredMovies(allMovies);
     setLoading(false)
   }
   const [checkbox, setCheckbox] = useState(false);
@@ -124,7 +138,7 @@ const App = () => {
   }
   const handleShortFilms = (movies) => {
     return movies.filter((movie) => {
-      return movie.duration <= 40;
+      return movie.duration <= SHORT_FILM_DURATION;
     });
   }
   const handleSearchSubmit = (cards, query) => {
@@ -136,6 +150,7 @@ const App = () => {
   const [filteredSavedMovies, setFilteredSavedMovies] = useState([]);
   const handleSearchSaveSubmit = (cards, query) => {
       const movies = filterMovies(cards, query.toLowerCase().trim());
+      localStorage.setItem('filteredSavedMovies', JSON.stringify(movies));
       setFilteredSavedMovies(movies)
   }
   const handleEditUser = (name, email) => {
@@ -148,6 +163,7 @@ const App = () => {
         })
         .catch(err => {
           console.log(err)
+          setErrorMessage('Не удалось обновить пользователя')
         })
     }
   }
@@ -194,17 +210,21 @@ const App = () => {
   }, [windowWidth]);
 
   useEffect(() => {
-    if (windowWidth >= 1000) {
-      setCountOfMovies(12);
-      setCountOfAddedMovies(3);
+    if (windowWidth >= 1500){
+      setCountOfMovies(COUNTOFMOVIES.wideDesktop.movies);
+      setCountOfAddedMovies(COUNTOFMOVIES.wideDesktop.addMovies);
+    }
+    if (windowWidth >= 1000 && windowWidth < 1500) {
+      setCountOfMovies(COUNTOFMOVIES.desktop.movies);
+      setCountOfAddedMovies(COUNTOFMOVIES.desktop.addMovies);
     }
     if (windowWidth >= 500 && windowWidth < 1000) {
-      setCountOfMovies(8);
-      setCountOfAddedMovies(2);
+      setCountOfMovies(COUNTOFMOVIES.laptop.movies);
+      setCountOfAddedMovies(COUNTOFMOVIES.laptop.addMovies);
     }
     if (windowWidth < 500) {
-      setCountOfMovies(5);
-      setCountOfAddedMovies(2);
+      setCountOfMovies(COUNTOFMOVIES.mobile.movies);
+      setCountOfAddedMovies(COUNTOFMOVIES.mobile.addMovies);
     }
   }, [windowWidth])
 
@@ -279,6 +299,7 @@ const App = () => {
             isLoggedIn={isLoggedIn}
             handleEditUser={handleEditUser}
             handleSignOut={handleSignOut}
+            errorMessage={errorMessage}
           />
           <Route path='*'>
             <NotFound/>

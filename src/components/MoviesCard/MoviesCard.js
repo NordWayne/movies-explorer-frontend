@@ -7,6 +7,17 @@ const MoviesCard = ({movie, handleSaveMovie, handleDeleteMovie, savedMovies =[]}
   let location = useLocation();
   let isSavedMovies = location.pathname === '/saved-movies';
   let imageUrl;
+  const buttonClass = () => {
+    if (isSavedMovies){
+      return 'card__button card__button_delete'
+    }
+    else if (checkSaveMovie()){
+      return 'card__button card__button_saved'
+    }
+    else{
+      return 'card__button'
+    }
+  }
   if (isSavedMovies) {
     imageUrl=movie.image
   }
@@ -69,7 +80,7 @@ const MoviesCard = ({movie, handleSaveMovie, handleDeleteMovie, savedMovies =[]}
           <img className='card__img' alt='фото фильма' src={imageUrl}/>
         </a>
         <button onClick={onClick}
-                className={`${!checkSaveMovie()?'card__button' : 'card__button card__button_saved'}`}
+                className={buttonClass()}
                 type='button'>{!checkSaveMovie() && 'Сохранить'}</button>
       </article>
     </li>

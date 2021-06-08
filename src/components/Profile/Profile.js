@@ -4,12 +4,16 @@ import Header from '../Header/Header';
 import UserContext from '../../contexts/UserContext';
 import useForm from '../../hooks/useForm';
 
-const Profile = ({handleEditUser, handleSignOut}) => {
+const Profile = ({handleEditUser, handleSignOut, errorMessage}) => {
   const user = useContext(UserContext);
   const { handleChange, handleSubmit, values, errors, isValid, setValues } = useForm(handleEditUser);
   useEffect(() => {
     setValues(user)
   },[user])
+  const [isApproved, setIsApproved] = useState(false);
+  const handleEditClick = () => {
+    setIsApproved(true)
+  }
 
   return (
     <>
@@ -48,10 +52,13 @@ const Profile = ({handleEditUser, handleSignOut}) => {
                      name='email'
               />
               <span className='account__error'>{errors?.email}</span>
+                {errorMessage&&<span className='account__error'>{errors?.email}</span>}
+                {!errorMessage&& isApproved && <p className='account__confirm'>Данные изменены</p>}
             </div>
             </div>
           </div>
-            <button className={`${isValid ?'account__button account__button_type_edit': 'account__button account__button_type_edit account__button_disabled'}`} type='submit' disabled={!isValid}>Редактировать</button>
+            <button className={`${isValid ?'account__button account__button_type_edit': 'account__button account__button_type_edit account__button_disabled'}`}
+                  type='submit' disabled={!isValid} onClick={handleEditClick} >Редактировать</button>
         </form>
         <button className='account__button account__button_type_signout' onClick={handleSignOut} type='button'>Выйти из аккаунта</button>
       </section>

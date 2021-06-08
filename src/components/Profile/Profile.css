@@ -41,6 +41,9 @@
 .account__text {
   margin:0;
 }
+.account__confirm {
+  color: #3DDC84;
+}
 .account__text-label {
   margin-bottom: 16px;
   margin-top: 0;

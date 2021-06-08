@@ -1,4 +1,4 @@
-import { MAIN_API, MOVIE_API } from './config';
+import { MAIN_API } from './config';
 
 class MainApi {
   constructor(config) {
