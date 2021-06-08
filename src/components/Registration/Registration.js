@@ -28,6 +28,7 @@ const Registration = ({handleRegister, errorMessage}) => {
             {errors?.password && <p className='registration__input-error'>{errors.password}</p>}
           </label>
         </fieldset>
+        <span className='registration__input-error'>{errorMessage}</span>
         <button type='submit' className={!isValid ? 'registration__submit_disabled registration__submit':'registration__submit'} disabled={!isValid}>Зарегистрироваться</button>
         <p className='registration__text'>Уже зарегистрированы? <Link to='/signin'
                                                                       className='registration__link'>Войти</Link></p>
