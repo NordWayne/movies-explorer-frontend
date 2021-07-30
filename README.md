@@ -1,5 +1,13 @@
 # Movies
-Сайт по поиску фильмов на React c авторизацией
-Макет можно посмотреть здесь  https://www.figma.com/file/KIDux2sSutJ1FICYFGimKw/Diploma-Copy?node-id=932%3A2618
+## Movies searching app
+## Techs:
+1. React
+2. Express
+3. MongoDB
+4. JWT
+  
 
-Ссылка на сайт  https://nordicmovies.nomoredomains.icu/
+Layout:  https://www.figma.com/file/KIDux2sSutJ1FICYFGimKw/Diploma-Copy?node-id=932%3A2618
+
+Link:  https://nordicmovies.nomoredomains.icu/ 
+

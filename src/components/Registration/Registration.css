@@ -46,6 +46,15 @@
   outline: none;
   border-bottom: 1px solid #4285F4;
 }
+.registration__input:invalid {
+  color:#EE3465;
+}
+.registration__input-error {
+  color: #EE3465;
+  margin-top:0;
+  font-weight: normal;
+  font-size: 10px;
+}
 .registration__label{
   display:flex;
   flex-direction: column;
@@ -66,6 +75,12 @@
 .registration__submit:hover {
   opacity: 0.8;
 }
+.registration__submit_disabled {
+  cursor: not-allowed;
+  background: #F8F8F8;
+  color: #C2C2C2;
+}
+
 .registration__submit_login {
   margin-top: 137px;
 }

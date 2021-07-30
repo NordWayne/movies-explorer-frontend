@@ -5,6 +5,9 @@
   flex-wrap: wrap;
   justify-content: center;
 }
+.card__text {
+  color: #FFFFFF;
+}
 .card__more-btn {
   width: 320px;
   margin-bottom: 89px;
