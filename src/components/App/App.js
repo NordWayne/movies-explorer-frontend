@@ -49,6 +49,8 @@ const App = () => {
           setIsLoggedIn(true);
           history.push('/movies')
           setErrorMessage('')
+          getSavedMovies();
+          getMovies();
         }
       })
       .catch(err => {
@@ -92,25 +94,29 @@ const App = () => {
   const getMovies = () => {
     setLoading(true)
     const allMovies = JSON.parse(localStorage.getItem('movies'));
+    console.log(allMovies)
     if(!allMovies) {
       moviesApi
         .getMovies()
         .then(res => {
           localStorage.setItem('movies', JSON.stringify(res))
+          console.log(res)
           setMovies(res)
+          setFilteredMovies(res);
         })
         .catch((err) => console.log(err))
         .finally(()=> setLoading(false))
     }
-    setMovies(allMovies);
-    setFilteredMovies(allMovies);
+    else {
+      setMovies(allMovies);
+      setFilteredMovies(allMovies);
+    }
+
     setLoading(false)
   }
-  const [checkbox, setCheckbox] = useState(false);
-  const handleCheckbox = () => {
-    setCheckbox(true)
-  }
-  const filterMovies = (movies, query) => {
+
+  const filterMovies = (movies, query, checkbox) => {
+    console.log(checkbox)
     const filteredMovies = movies.filter((item) => {
       const nameRu = item.nameRU.toLowerCase().trim();
       if (item.nameEN){
@@ -120,7 +126,6 @@ const App = () => {
       else return nameRu.indexOf(query) !== -1
     });
     if(checkbox) {
-      setCheckbox(false);
       return handleShortFilms(filteredMovies);
     }
     return filteredMovies;
@@ -130,14 +135,14 @@ const App = () => {
       return movie.duration <= SHORT_FILM_DURATION;
     });
   }
-  const handleSearchSubmit = (cards, query) => {
-    const movies = filterMovies(cards, query.toLowerCase().trim());
+  const handleSearchSubmit = (cards, query, checkbox) => {
+    const movies = filterMovies(cards, query.toLowerCase().trim(), checkbox);
     localStorage.setItem('filteredMovies', JSON.stringify(movies));
     setFilteredMovies(movies)
   }
   const [filteredSavedMovies, setFilteredSavedMovies] = useState([]);
-  const handleSearchSaveSubmit = (cards, query) => {
-      const movies = filterMovies(cards, query.toLowerCase().trim());
+  const handleSearchSaveSubmit = (cards, query, checkbox) => {
+      const movies = filterMovies(cards, query.toLowerCase().trim(), checkbox);
       localStorage.setItem('filteredSavedMovies', JSON.stringify(movies));
       setFilteredSavedMovies(movies)
   }
@@ -258,7 +263,6 @@ const App = () => {
             handleSaveMovie={handleSaveMovie}
             handleDeleteMovie={handleDeleteMovie}
             handleSearchSubmit={handleSearchSubmit}
-            handleCheckbox={handleCheckbox}
             isLoading={isLoading}
             countOfMovies={countOfMovies}
             handleAddMovies={handleAddMovies}
@@ -272,7 +276,6 @@ const App = () => {
             filteredMovies={filteredSavedMovies}
             handleDeleteMovie={handleDeleteMovie}
             handleSearchSubmit={handleSearchSaveSubmit}
-            handleCheckbox={handleCheckbox}
             isLoading={isLoading}
           />
           <ProtectedRoute

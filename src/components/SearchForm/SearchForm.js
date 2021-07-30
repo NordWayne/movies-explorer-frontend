@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import './SearchForm.css';
 import logo from '../../images/searchicon.svg';
 
-const SearchForm = ({movies, handleSearchSubmit, handleCheckbox}) => {
+const SearchForm = ({movies, handleSearchSubmit }) => {
   const [value, setValue] = useState('')
-  const onCheck = () => {
-    handleCheckbox();
-    handleSearchSubmit(movies, value)
+  const checkboxRef = useRef();
+  const onCheck = (e) => {
+    handleSearchSubmit(movies, value, e.target.checked )
   }
   const handleChange = (event) => {
     setValue(event.target.value)
   }
   const handleSubmit = (event) => {
     event.preventDefault();
-    handleSearchSubmit(movies, value)
+    handleSearchSubmit(movies, value, checkboxRef.current.checked)
   }
 
   return (
@@ -25,7 +25,7 @@ const SearchForm = ({movies, handleSearchSubmit, handleCheckbox}) => {
           </div>
           <label className='search-form__checkbox-wrapper'>
             <div className='search-form__checkbox-container'>
-              <input type='checkbox' className='search-form__checkbox' onChange={onCheck} />
+              <input type='checkbox' className='search-form__checkbox' onChange={(e)=>onCheck(e)} ref={checkboxRef}    />
               <span className='search-form__switcher'/>
             </div>
             <p className='search-form__text'>Короткометражки</p>
